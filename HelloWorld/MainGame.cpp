@@ -2,13 +2,7 @@
 #define PLAY_USING_GAMEOBJECT_MANAGER
 #include "Play.h"
 #include <cmath>
-
-enum ObjectType
-{
-	TYPE_PADDLE,
-	TYPE_BALL,
-	TYPE_BRICK
-};
+#include "constants.h"
 
 int DISPLAY_WIDTH = 640;
 int DISPLAY_HEIGHT = 360;
