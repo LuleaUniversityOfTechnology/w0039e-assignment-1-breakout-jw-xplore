@@ -26,8 +26,50 @@ std::vector<int> brickIds = {};
 int balldirx = 1;
 int balldiry = 1;
 
-// TODO: Change this to player position
-int playerPosX = DISPLAY_WIDTH / 2;
+//----------------------------------------------------------------------
+// Stuctures
+//----------------------------------------------------------------------
+
+struct Paddle
+{
+	int width;
+	int height;
+	int speed;
+	int posX = DISPLAY_WIDTH / 2;
+	int posY = 20;
+
+	Paddle()
+	{
+
+	}
+
+	Paddle(int w, int h, int s)
+	{
+		width = w;
+		height = h;
+		speed = s;
+	}
+
+	Point2D TopRight()
+	{
+		return Point2D(posX, posY);
+	}
+
+	Point2D BottomLeft()
+	{
+		return Point2D(posX + width, posY + height);
+	}
+
+	void Move()
+	{
+		if (Play::KeyDown(KEY_RIGHT))
+			posX += speed;
+		else if (Play::KeyDown(KEY_LEFT))
+			posX -= speed;
+	}
+};
+
+Paddle paddle;
 
 //----------------------------------------------------------------------
 // Custom functions
@@ -35,7 +77,7 @@ int playerPosX = DISPLAY_WIDTH / 2;
 
 void DrawPaddle()
 {
-	Play::DrawRect(Point2D(playerPosX, 0), Point2D(playerPosX + 60, 10), Play::cWhite, true);
+	Play::DrawRect(paddle.TopRight(), paddle.BottomLeft(), Play::cWhite, true);
 }
 
 bool IsColliding(GameObject& obj, Point2D paddleTopLeft, Point2D paddleBottomRight)
@@ -47,20 +89,22 @@ bool IsColliding(GameObject& obj, Point2D paddleTopLeft, Point2D paddleBottomRig
 
 void UpdatePaddle()
 {
-	int playerSpeed = 5;
-
 	// Movement
-	if (Play::KeyDown(KEY_RIGHT))
-		playerPosX += playerSpeed;
-	else if (Play::KeyDown(KEY_LEFT))
-		playerPosX -= playerSpeed;
+	paddle.Move();
 
 	// Check paddle collision
 	GameObject& ball = Play::GetGameObject(ballIds.at(0));
-	if (IsColliding(ball, Point2D(playerPosX, 0), Point2D(playerPosX + 60, 10)))
+	
+
+	if (IsColliding(ball, paddle.TopRight(), paddle.BottomLeft()))
 		balldiry = -balldiry;
 
 	DrawPaddle();
+}
+
+// TODO: Handle collisions here, make sure ball direction is changed based on collision direction
+void BallCollision()
+{
 }
 
 void UpdateBall()
@@ -119,6 +163,9 @@ void UpdateBrick()
 void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 {
 	Play::CreateManager( DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_SCALE );
+
+	// Create player paddle 
+	paddle = Paddle(60, 10, 5);
 
 	// Register ball object
 	Play::CreateGameObject(ObjectType::TYPE_BALL, { DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2 }, 4, "ball");
