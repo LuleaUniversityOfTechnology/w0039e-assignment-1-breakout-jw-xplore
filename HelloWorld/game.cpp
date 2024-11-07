@@ -3,6 +3,7 @@
 #include "game.h"
 #include "Play.h"
 #include "constants.h"
+#include "Paddle.h"
 
 bool ObjectAreaCollission(Play::GameObject& obj, Play::Point2D paddleTopLeft, Play::Point2D paddleBottomRight)
 {

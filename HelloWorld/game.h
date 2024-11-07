@@ -17,42 +17,6 @@ struct Ball
 	}
 };
 
-struct Paddle
-{
-	int width;
-	int height;
-	int speed;
-	int posX;
-	int posY = 10;
-
-	Paddle(int w, int h, int s)
-	{
-		width = w;
-		height = h;
-		speed = s;
-
-		posX = DISPLAY_WIDTH / 2 - width / 2;
-	}
-	
-	Play::Point2D TopRight()
-	{
-		return Play::Point2D(posX, posY);
-	}
-
-	Play::Point2D BottomLeft()
-	{
-		return Play::Point2D(posX + width, posY + height);
-	}
-
-	void Move()
-	{
-		if (Play::KeyDown(Play::KeyboardButton::KEY_RIGHT) && posX < DISPLAY_WIDTH - width)
-			posX += speed;
-		else if (Play::KeyDown(Play::KeyboardButton::KEY_LEFT) && posX > 0)
-			posX -= speed;
-	}
-};
-
 // Functions
 void UpdatePaddle();
 void DrawPaddle();
