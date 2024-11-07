@@ -30,6 +30,8 @@ struct Paddle
 		width = w;
 		height = h;
 		speed = s;
+
+		posX = DISPLAY_WIDTH / 2 - width / 2;
 	}
 	
 	Play::Point2D TopRight()

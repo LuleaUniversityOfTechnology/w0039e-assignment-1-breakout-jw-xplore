@@ -92,7 +92,7 @@ void CreateBricks(int countX, int countY)
 	{
 		for (int y = 0; y < countY; y++)
 		{
-			Play::CreateGameObject(ObjectType::TYPE_BRICK, { 18 * x, DISPLAY_HEIGHT - 12 * y }, 4, "brick");
+			Play::CreateGameObject(ObjectType::TYPE_BRICK, { BRICK_WIDTH * x, DISPLAY_HEIGHT - BRICK_HEIGHT * y }, 4, "brick");
 		}
 	}
 
