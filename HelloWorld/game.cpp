@@ -33,7 +33,6 @@ void DrawPaddle()
 // Ball functions
 //----------------------------------------------------------------------
 
-Ball ball = Ball(1, 0.75, 5);
 std::vector<int> ballIds = {};
 
 void SpawnBall(Play::Point2D pos)
@@ -77,7 +76,7 @@ void UpdateBalls()
 
 void SetBallDirection(GameObject& ballGo, float x, float y)
 {
-	ballGo.velocity = normalize({ x, y }) * ball.speed;
+	ballGo.velocity = normalize({ x, y }) * BALL_SPEED;
 }
 
 //----------------------------------------------------------------------

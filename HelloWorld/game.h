@@ -3,20 +3,6 @@
 #include "Play.h"
 #include "constants.h"
 
-struct Ball
-{
-	float dirX = 1;
-	float dirY = 1;
-	int speed = 5;
-
-	Ball(float dx, float dy, int sp)
-	{
-		dirX = dx;
-		dirY = dy;
-		speed = sp;
-	}
-};
-
 // Functions
 void UpdatePaddle();
 void DrawPaddle();
