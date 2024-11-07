@@ -23,7 +23,7 @@ struct Paddle
 	int height;
 	int speed;
 	int posX;
-	int posY;
+	int posY = 10;
 
 	Paddle(int w, int h, int s)
 	{
@@ -44,20 +44,19 @@ struct Paddle
 
 	void Move()
 	{
-		if (Play::KeyDown(Play::KeyboardButton::KEY_RIGHT))
+		if (Play::KeyDown(Play::KeyboardButton::KEY_RIGHT) && posX < DISPLAY_WIDTH - width)
 			posX += speed;
-		else if (Play::KeyDown(Play::KeyboardButton::KEY_LEFT))
+		else if (Play::KeyDown(Play::KeyboardButton::KEY_LEFT) && posX > 0)
 			posX -= speed;
 	}
 };
 
 // Functions
-//bool ObjectAreaCollission(Play::GameObject& obj, Play::Point2D paddleTopLeft, Play::Point2D paddleBottomRight);
-
 void UpdatePaddle();
 void DrawPaddle();
-void SpawnBall();
-void UpdateBall();
+void SpawnBall(Play::Point2D pos);
+void UpdateBalls();
+void SetBallDirection(Play::GameObject& ballGo, float x, float y);
 void CreateBricks(int countX, int countY);
 void UpdateBricks();
 
