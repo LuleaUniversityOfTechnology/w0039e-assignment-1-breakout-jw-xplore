@@ -5,10 +5,20 @@
 #include "constants.h"
 #include "Paddle.h"
 
+float Max(float a, float b)
+{
+	return a > b ? a : b;
+}
+
+float Min(float a, float b)
+{
+	return a < b ? a : b;
+}
+
 bool ObjectAreaCollission(Play::GameObject& obj, Play::Point2D paddleTopLeft, Play::Point2D paddleBottomRight)
 {
-	const float dx = obj.pos.x - max(paddleTopLeft.x, min(obj.pos.x, paddleBottomRight.x));
-	const float dy = obj.pos.y - max(paddleTopLeft.y, min(obj.pos.y, paddleBottomRight.y));
+	const float dx = obj.pos.x - Max(paddleTopLeft.x, Min(obj.pos.x, paddleBottomRight.x));
+	const float dy = obj.pos.y - Max(paddleTopLeft.y, Min(obj.pos.y, paddleBottomRight.y));
 	return (dx * dx + dy * dy) < (obj.radius * obj.radius);
 }
 
