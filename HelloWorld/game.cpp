@@ -4,6 +4,10 @@
 #include "Play.h"
 #include "constants.h"
 #include "Paddle.h"
+#include "scoreSystem.h"
+#include <string.h>
+
+ScoreSystem scoreSystem;
 
 float Max(float a, float b)
 {
@@ -68,11 +72,18 @@ void UpdateBalls()
 		if (ballGo.pos.x >= DISPLAY_WIDTH)
 			SetBallDirection(ballGo, -abs(ballGo.velocity.x), ballGo.velocity.y);
 
-		if (ballGo.pos.y <= 0)
-			SetBallDirection(ballGo, ballGo.velocity.x, abs(ballGo.velocity.y));
-
 		if (ballGo.pos.y >= DISPLAY_HEIGHT)
 			SetBallDirection(ballGo, ballGo.velocity.x, -abs(ballGo.velocity.y));
+
+		// Hitting ground
+		if (ballGo.pos.y <= 0)
+		{
+			SetBallDirection(ballGo, ballGo.velocity.x, abs(ballGo.velocity.y));
+
+			// End game
+			EndGame();
+			return;
+		}
 
 		// Ball player collision
 		if (ObjectAreaCollission(ballGo, paddle.TopRight(), paddle.BottomLeft()))
@@ -139,11 +150,25 @@ void UpdateBricks()
 		{
 			Play::DestroyGameObject(brickIds.at(brickToRemove));
 			brickIds.push_back(brickIds.at(brickToRemove));
+
+			// Update score 
+			scoreSystem.score++;
 		}
 			
 	}
 }
 
+//----------------------------------------------------------------------
+// Score system
+//----------------------------------------------------------------------
+
+void DrawScore()
+{
+	Play::Point2D position = { DISPLAY_WIDTH / 2, DISPLAY_HEIGHT - 20 };
+	std::string tmp = "Score: " + std::to_string(scoreSystem.score);
+	char const* txt = tmp.c_str();
+	Play::DrawDebugText(position, txt, Play::cWhite);
+}
 
 //----------------------------------------------------------------------
 // General functions
@@ -154,4 +179,28 @@ void StepFrame(float deltaT)
 	UpdatePaddle();
 	UpdateBalls();
 	UpdateBricks();
+	DrawScore();
+}
+
+void EndGame()
+{
+	// Destroy balls
+	for (int i = 0; i < ballIds.size(); i++)
+	{
+		Play::DestroyGameObject(ballIds[i]);
+	}
+
+	ballIds.clear();
+
+	// Disable player control
+	paddle.hasControl = false;
+
+	// Handle score
+	// NOTE: This is not being found. Is it because of unsigned int or reference?
+	/*
+	if (UpdateHighScoreList(scoreSystem.score, scoreSystem))
+	{
+		SaveHighScore(DEFAUL_HIGH_SCORE_FILENAME, scoreSystem);
+	}
+	*/
 }

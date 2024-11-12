@@ -13,3 +13,4 @@ void CreateBricks(int countX, int countY);
 void UpdateBricks();
 
 void StepFrame(float deltaT);
+void EndGame();

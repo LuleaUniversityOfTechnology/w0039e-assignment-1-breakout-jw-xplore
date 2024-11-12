@@ -9,6 +9,7 @@ struct Paddle
 	int speed;
 	int posX;
 	int posY = 10;
+	bool hasControl = true;
 
 	Paddle(int w, int h, int s);
 

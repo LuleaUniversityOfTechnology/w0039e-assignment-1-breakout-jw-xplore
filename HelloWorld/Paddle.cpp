@@ -13,6 +13,11 @@ Paddle::Paddle(int w, int h, int s)
 
 void Paddle::Move()
 {
+	// Prevent control 
+	if (!hasControl)
+		return;
+
+	// Control movement
 	if (Play::KeyDown(Play::KeyboardButton::KEY_RIGHT) && posX < DISPLAY_WIDTH - width)
 		posX += speed;
 	else if (Play::KeyDown(Play::KeyboardButton::KEY_LEFT) && posX > 0)
