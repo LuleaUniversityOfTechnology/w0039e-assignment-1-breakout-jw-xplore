@@ -4,9 +4,7 @@
 void MainGameEntry( PLAY_IGNORE_COMMAND_LINE )
 {
 	Play::CreateManager( DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_SCALE );
-
-	CreateBricks(40, 5);
-	SpawnBall({ DISPLAY_WIDTH / 2 + 100, DISPLAY_HEIGHT / 2 + 50 });
+	StartGame();
 }
 
 // Called by PlayBuffer every frame (60 times a second!)

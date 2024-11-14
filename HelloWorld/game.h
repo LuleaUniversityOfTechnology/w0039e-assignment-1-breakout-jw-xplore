@@ -12,5 +12,6 @@ void SetBallDirection(Play::GameObject& ballGo, float x, float y);
 void CreateBricks(int countX, int countY);
 void UpdateBricks();
 
+void StartGame();
 void StepFrame(float deltaT);
 void EndGame();

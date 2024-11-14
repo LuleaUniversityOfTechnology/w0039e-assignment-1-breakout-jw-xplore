@@ -8,6 +8,7 @@
 #include <string.h>
 
 ScoreSystem scoreSystem;
+bool isGameRunning = true;
 
 float Max(float a, float b)
 {
@@ -149,7 +150,7 @@ void UpdateBricks()
 		if (brickToRemove != -1)
 		{
 			Play::DestroyGameObject(brickIds.at(brickToRemove));
-			brickIds.push_back(brickIds.at(brickToRemove));
+			brickIds.erase(brickIds.begin() + brickToRemove);
 
 			// Update score 
 			scoreSystem.currentScore++;
@@ -164,18 +165,46 @@ void UpdateBricks()
 
 void DrawScore()
 {
+	// Show current score
 	Play::Point2D position = { DISPLAY_WIDTH / 2, DISPLAY_HEIGHT - 20 };
 	std::string tmp = "Score: " + std::to_string(scoreSystem.currentScore);
 	char const* txt = tmp.c_str();
 	Play::DrawDebugText(position, txt, Play::cWhite);
 
-	// TODO 
 	// Show list of high scores
+	if (isGameRunning)
+		return;
+
+	Play::Point2D hSPosition = { 20, DISPLAY_HEIGHT - 20 };
+	Play::DrawDebugText(hSPosition, "Top score:", Play::cWhite, false);
+
+	for (int i = 0; i < scoreSystem.highScoreListSize; i++)
+	{
+		tmp = std::to_string(scoreSystem.highScoreList[i]);
+		char const* scoreTxt = tmp.c_str();
+		hSPosition.y = hSPosition.y - 20;
+		Play::DrawDebugText(hSPosition, scoreTxt, Play::cWhite, false);
+	}
+	
 }
 
 //----------------------------------------------------------------------
 // General functions
 //----------------------------------------------------------------------
+
+void StartGame()
+{
+	isGameRunning = true;
+
+	// Setup player paddle
+	paddle.hasControl = true;
+	paddle.posX = DISPLAY_WIDTH / 2;
+
+	// Setup scene
+	CreateBricks(40, 5);
+	SpawnBall({ DISPLAY_WIDTH / 2 + 100, DISPLAY_HEIGHT / 2 + 50 });
+	scoreSystem.currentScore = 0;
+}
 
 void StepFrame(float deltaT)
 {
@@ -183,18 +212,21 @@ void StepFrame(float deltaT)
 	UpdateBalls();
 	UpdateBricks();
 	DrawScore();
+
+	// Update game end 
+	if (!isGameRunning)
+	{
+		// Show restart option
+		Play::DrawDebugText({DISPLAY_WIDTH / 2, DISPLAY_HEIGHT / 2}, "R - Restart game", Play::cWhite);
+		if (Play::KeyDown(Play::KeyboardButton::KEY_R))
+		{
+			StartGame();
+		}
+	}
 }
 
 void EndGame()
 {
-	// Destroy balls
-	for (int i = 0; i < ballIds.size(); i++)
-	{
-		Play::DestroyGameObject(ballIds[i]);
-	}
-
-	ballIds.clear();
-
 	// Disable player control
 	paddle.hasControl = false;
 
@@ -204,11 +236,21 @@ void EndGame()
 		scoreSystem.SaveHighScore(DEFAUL_HIGH_SCORE_FILENAME);
 	}
 
+	// Destroy balls
+	for (int i = 0; i < ballIds.size(); i++)
+	{
+		Play::DestroyGameObject(ballIds[i]);
+	}
 
-	// TODO
-	// Remove objects 
+	ballIds.clear();
 
-	// Show restart option
+	// Remove bricks
+	for (int i = 0; i < brickIds.size(); i++)
+	{
+		Play::DestroyGameObject(brickIds[i]);
+	}
 
-	// Implement restart behavior
+	brickIds.clear();
+
+	isGameRunning = false;
 }
