@@ -17,10 +17,14 @@ Then remove the ball and all remaining bricks, reset the scene and the current s
 struct ScoreSystem
 {
 	unsigned int currentScore = 0;
-	unsigned int* highScoreList[5];
+	unsigned int* highScoreList;
+	int highScoreListSize;
+
+	ScoreSystem();
+	~ScoreSystem();
 
 	int PositionInHighScore(unsigned int score);
 	bool UpdateHighScoreList(unsigned int score);
 	void SaveHighScore(const char* filename);
-	void LoadHighScore(const char* filename);
+	bool LoadHighScore(const char* filename);
 };

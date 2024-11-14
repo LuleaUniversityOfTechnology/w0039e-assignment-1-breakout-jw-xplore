@@ -168,6 +168,9 @@ void DrawScore()
 	std::string tmp = "Score: " + std::to_string(scoreSystem.currentScore);
 	char const* txt = tmp.c_str();
 	Play::DrawDebugText(position, txt, Play::cWhite);
+
+	// TODO 
+	// Show list of high scores
 }
 
 //----------------------------------------------------------------------
@@ -196,13 +199,16 @@ void EndGame()
 	paddle.hasControl = false;
 
 	// Handle score
-	// NOTE: This is not being found. Is it because of unsigned int or reference?
-	/*
-	if (UpdateHighScoreList(scoreSystem.score, scoreSystem))
+	if (scoreSystem.UpdateHighScoreList(scoreSystem.currentScore))
 	{
-		SaveHighScore(DEFAUL_HIGH_SCORE_FILENAME, scoreSystem);
+		scoreSystem.SaveHighScore(DEFAUL_HIGH_SCORE_FILENAME);
 	}
-	*/
 
-	scoreSystem.SaveHighScore(DEFAUL_HIGH_SCORE_FILENAME);
+
+	// TODO
+	// Remove objects 
+
+	// Show restart option
+
+	// Implement restart behavior
 }
