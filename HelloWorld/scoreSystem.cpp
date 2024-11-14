@@ -1,20 +1,21 @@
 #include "scoreSystem.h"
 #include <fstream>
 #include <iostream>
+#include "constants.h"
 
 // Return number in which position of high score should provide score be at
 // Also return last position if score is lower then scores in list but list is not fully filled
 // Return -1 if score is lower than all numbers in score list
-int PositionInHighScore(int score, ScoreSystem scoreSys)
+int ScoreSystem::PositionInHighScore(unsigned int score)
 {
 	for (int i = 0; i < HIGH_SCORE_LIST_SIZE; i++)
 	{
 		// Is higher
-		if (scoreSys.highScoreList > score)
+		if (*highScoreList[i] > score)
 			return i;
 
 		// Empty position
-		if (scoreSys.highScoreList == 0)
+		if (highScoreList == 0)
 			return i;
 	}
 
@@ -23,35 +24,35 @@ int PositionInHighScore(int score, ScoreSystem scoreSys)
 
 // Check and update score in high score list 
 // Return true only if given score can be added to high score list
-bool UpdateHighScoreList(int score, ScoreSystem& scoreSys)
+bool ScoreSystem::UpdateHighScoreList(unsigned int score)
 {
-	int position = PositionInHighScore(scoreSys.score, scoreSys);
+	int position = PositionInHighScore(currentScore);
 
 	// Don't update
 	if (position == -1)
 		return false;
 
 	// Update 
-	scoreSys.highScoreList[position] = score;
+	highScoreList[position] = &score;
 	return true;
 }
 
 // Write current high score list values score to file of given name
-void SaveHighScore(const char* filename, ScoreSystem scoreSys)
+void ScoreSystem::SaveHighScore(const char* filename)
 {
 	std::ofstream file;
 	file.open(filename);
 
 	for (int i = 0; i < HIGH_SCORE_LIST_SIZE; i++)
 	{
-		file << scoreSys.highScoreList[i] << "\n";
+		file << highScoreList[i] << "\n";
 	}
 
 	file.close();
 }
 
 // Read file of given name and stores results in high score list
-void LoadHighScore(const char* filename, ScoreSystem scoreSys)
+void ScoreSystem::LoadHighScore(const char* filename)
 {
 	char* line;
 	std::ifstream file;

@@ -152,7 +152,7 @@ void UpdateBricks()
 			brickIds.push_back(brickIds.at(brickToRemove));
 
 			// Update score 
-			scoreSystem.score++;
+			scoreSystem.currentScore++;
 		}
 			
 	}
@@ -165,7 +165,7 @@ void UpdateBricks()
 void DrawScore()
 {
 	Play::Point2D position = { DISPLAY_WIDTH / 2, DISPLAY_HEIGHT - 20 };
-	std::string tmp = "Score: " + std::to_string(scoreSystem.score);
+	std::string tmp = "Score: " + std::to_string(scoreSystem.currentScore);
 	char const* txt = tmp.c_str();
 	Play::DrawDebugText(position, txt, Play::cWhite);
 }
@@ -203,4 +203,6 @@ void EndGame()
 		SaveHighScore(DEFAUL_HIGH_SCORE_FILENAME, scoreSystem);
 	}
 	*/
+
+	scoreSystem.SaveHighScore(DEFAUL_HIGH_SCORE_FILENAME);
 }

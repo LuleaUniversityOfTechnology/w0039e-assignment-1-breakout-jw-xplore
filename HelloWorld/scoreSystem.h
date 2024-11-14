@@ -1,4 +1,5 @@
 #pragma once
+#include "constants.h"
 
 /*
 Score system assigment
@@ -13,16 +14,13 @@ Make sure you shift all the previous scores if necessary.
 Then remove the ball and all remaining bricks, reset the scene and the current score and spawn a new ball.
 */
 
-const int HIGH_SCORE_LIST_SIZE = 5;
-const char* DEFAUL_HIGH_SCORE_FILENAME = "highScore.txt";
-
 struct ScoreSystem
 {
-	unsigned int score = 0;
-	unsigned int* highScoreList[HIGH_SCORE_LIST_SIZE];
-};
+	unsigned int currentScore = 0;
+	unsigned int* highScoreList[5];
 
-int PositionInHighScore(int score, ScoreSystem scoreSys);
-bool UpdateHighScoreList(int score, ScoreSystem& scoreSys);
-void SaveHighScore(const char* filename, ScoreSystem scoreSys);
-void LoadHighScore(const char* filename, ScoreSystem scoreSys);
+	int PositionInHighScore(unsigned int score);
+	bool UpdateHighScoreList(unsigned int score);
+	void SaveHighScore(const char* filename);
+	void LoadHighScore(const char* filename);
+};
