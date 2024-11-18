@@ -3,7 +3,7 @@
 #include "Play.h"
 #include "constants.h"
 
-// Functions
+// Functions 
 void UpdatePaddle();
 void DrawPaddle();
 void SpawnBall(Play::Point2D pos);
